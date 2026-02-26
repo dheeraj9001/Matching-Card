@@ -16,6 +16,7 @@ namespace MemoryMatch.Presentation
 
         private Tween flipTween;
         private CardModel _model;
+        private bool playSound = false;
 
         public event Action<CardView> OnClicked;
 
@@ -29,6 +30,7 @@ namespace MemoryMatch.Presentation
         private void HandleClick()
         {
             OnClicked?.Invoke(this);
+            playSound = true;
         }
 
         public void Refresh()
@@ -36,12 +38,12 @@ namespace MemoryMatch.Presentation
             if (front != null)
                 front.sprite = _model.FrontSprite;
 
-            PlayFlip(_model.IsFaceUp);
+            PlayFlip(_model.IsFaceUp); 
         }
 
         public CardModel GetModel() => _model;
 
-        public void PlayFlip(bool faceUp)
+        public void PlayFlip(bool faceUp )
         {
             flipTween?.Kill();
 
@@ -50,7 +52,9 @@ namespace MemoryMatch.Presentation
                 .AppendCallback(() =>
                 {
                     back.SetActive(!faceUp);
-                    AudioManager.Instance?.PlayFlip();
+
+                    if (playSound)
+                        AudioManager.Instance?.PlayFlip();
                 })
                 .Append(transform.DOScaleX(1f, flipDuration * 0.5f));
         }

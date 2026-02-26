@@ -9,6 +9,7 @@ namespace MemoryMatch.Domain
 
         public event Action<CardModel, CardModel, bool> OnPairEvaluated;
 
+
         public void SelectCard(CardModel card)
         {
             if (card.IsFaceUp || card.IsMatched)
@@ -41,6 +42,12 @@ namespace MemoryMatch.Domain
 
             OnPairEvaluated?.Invoke(_first, _second, isMatch);
 
+            _first = null;
+            _second = null;
+        }
+
+        public void ResetSelection()
+        {
             _first = null;
             _second = null;
         }

@@ -1,13 +1,12 @@
+using MemoryMatch.Domain;
 using System.Collections.Generic;
 
-namespace MemoryMatch.Domain
+[System.Serializable]
+public class GameState
 {
-    [System.Serializable]
-    public class GameState
-    {
-        public List<CardModel> Cards;
-        public int Score;
-        public int Rows;
-        public int Columns;
-    }
+    public int MatchCount;
+    public int TurnCount;
+    public int Rows;
+    public int Columns;
+    public List<CardModel> Cards;
 }

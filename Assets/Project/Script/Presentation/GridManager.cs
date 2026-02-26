@@ -94,5 +94,50 @@ namespace MemoryMatch.Presentation
                 card.Refresh();
             }
         }
+
+        public void ResetBoard()
+        {
+            if (_spawnedCards.Count == 0) return;
+
+            ReshuffleExistingCards();
+            ResetCardStates();
+        }
+
+        private void ReshuffleExistingCards()
+        {
+            int totalCards = _spawnedCards.Count;
+            int pairCount = totalCards / 2;
+
+            var sprites = spriteLibrary.GetShuffledSprites(pairCount);
+
+            var models = new List<CardModel>();
+
+            for (int i = 0; i < pairCount; i++)
+            {
+                var sprite = sprites[i];
+
+                models.Add(new CardModel(i, sprite));
+                models.Add(new CardModel(i, sprite));
+            }
+
+            for (int i = models.Count - 1; i > 0; i--)
+            {
+                int j = Random.Range(0, i + 1);
+                (models[i], models[j]) = (models[j], models[i]);
+            }
+
+            for (int i = 0; i < _spawnedCards.Count; i++)
+            {
+                _spawnedCards[i].Initialize(models[i]);
+            }
+        }
+
+        private void ResetCardStates()
+        {
+            foreach (var card in _spawnedCards)
+            {
+                card.Refresh();
+            }
+        }
     }
 }
